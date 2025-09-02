@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Legal Verification - Professional Legal Document Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .tab-active {
+            border-bottom: 3px solid #667eea;
+            color: #667eea;
+            font-weight: 600;
+        }
+        .legal-pattern {
+            background-image: url("https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/00c03298-e7b1-4a6e-851e-af208695198f.png");
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                        <i class="fas fa-scale-balanced text-purple-600 text-2xl"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold">Legal Verification</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#features" class="hover:text-purple-200 transition">Features</a>
+                    <a href="#demo" class="hover:text-purple-200 transition">Demo</a>
+                    <a href="#about" class="hover:text-purple-200 transition">About</a>
+                </nav>
+            </div>
+
+            <div class="text-center mt-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                    AI-Powered Legal Document Analysis
+                </h2>
+                <p class="text-xl text-purple-100 mb-8">
+                    Advanced contract review, risk assessment, and fraud detection powered by AI
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <button
+                        class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
+                    >
+                        Get Started
+                    </button>
+                    <button
+                        class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition"
+                    >
+                        View Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Application -->
+    <main class="container mx-auto px-6 py-12" id="demo">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- App Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-file-contract text-3xl"></i>
+                    <div>
+                        <h2 class="text-2xl font-bold">Legal Document Analyzer</h2>
+                        <p class="text-blue-100">Upload documents for comprehensive legal analysis</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="p-6 border-b">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2"
+                            >Upload Document</label
+                        >
+                        <div
+                            class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition cursor-pointer"
+                            id="dropZone"
+                        >
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-3"></i>
+                            <p class="text-sm text-gray-600">
+                                Drop your document here or click to browse
+                            </p>
+                            <p class="text-xs text-gray-500 mt-1">Supports PDF, DOCX, TXT files</p>
+                            <input
+                                type="file"
+                                id="fileInput"
+                                class="hidden"
+                                accept=".pdf,.docx,.txt"
+                            />
+                        </div>
+                        <div id="fileInfo" class="mt-3 text-sm text-gray-600 hidden">
+                            <span id="fileName"></span>
+                            <span id="fileSize" class="text-gray-500"></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2"
+                            >Document Text</label
+                        >
+                        <textarea
+                            id="documentText"
+                            class="w-full h-48 border border-gray-300 rounded-lg p-4 text-sm resize-none"
+                            placeholder="Document text will appear here after upload or paste directly..."
+                        ></textarea>
+                        <button
+                            id="analyzeAllBtn"
+                            class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold mt-4 hover:bg-blue-700 transition disabled:opacity-50"
+                            disabled
+                        >
+                            <i class="fas fa-search mr-2"></i>Analyze Document
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Tabs -->
+            <div class="bg-gray-50 p-6">
+                <div class="flex overflow-x-auto space-x-1 pb-2">
+                    <button
+                        class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition tab-active"
+                        data-tab="clause"
+                    >
+                        <i class="fas fa-file-lines mr-2"></i>Clause Analysis
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+                        data-tab="risk"
+                    >
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Risk Assessment
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+                        data-tab="compliance"
+                    >
+                        <i class="fas fa-shield-alt mr-2"></i>Compliance Check
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+                        data-tab="summary"
+                    >
+                        <i class="fas fa-chart-line mr-2"></i>Executive Summary
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+                        data-tab="certificate"
+                    >
+                        <i class="fas fa-certificate mr-2"></i>Certificate Check
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+                        data-tab="land"
+                    >
+                        <i class="fas fa-landmark mr-2"></i>Land Document
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+                        data-tab="fraud"
+                    >
+                        <i class="fas fa-search-dollar mr-2"></i>Fraud Detection
+                    </button>
+                </div>
+
+                <!-- Results Area -->
+                <div class="bg-white rounded-lg p-6 mt-4">
+                    <div id="resultsContent" class="min-h-64">
+                        <div class="text-center py-12 text-gray-400">
+                            <i class="fas fa-search text-4xl mb-4"></i>
+                            <p>
+                                Upload a document and select an analysis type to see results
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Features Section -->
+    <section class="bg-gradient-to-br from-gray-50 to-gray-100 py-16" id="features">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    Powerful Legal Analysis Features
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Advanced AI-powered tools for comprehensive document review and fraud detection
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <div
+                        class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-4"
+                    >
+                        <i class="fas fa-file-contract text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Clause Analysis</h3>
+                    <p class="text-gray-600">
+                        Identify and analyze key contractual clauses with risk level assessments and summaries.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <div
+                        class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mb-4"
+                    >
+                        <i class="fas fa-exclamation-circle text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Risk Assessment</h3>
+                    <p class="text-gray-600">
+                        Comprehensive risk evaluation with scoring and actionable recommendations.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <div
+                        class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-4"
+                    >
+                        <i class="fas fa-shield-check text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Fraud Detection</h3>
+                    <p class="text-gray-600">
+                        Advanced algorithms to detect forged documents and suspicious patterns.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Legal Verification</h3>
+                    <p class="text-gray-400">
+                        AI-powered legal document analysis and fraud detection platform.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Features</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Clause Analysis</li>
+                        <li>Risk Assessment</li>
+                        <li>Fraud Detection</li>
+                        <li>Compliance Check</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Documentation</li>
+                        <li>API Reference</li>
+                        <li>Contact Support</li>
+                        <li>Privacy Policy</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"
+                            ><i class="fab fa-twitter"></i
+                        ></a>
+                        <a href="#" class="text-gray-400 hover:text-white"
+                            ><i class="fab fa-linkedin"></i
+                        ></a>
+                        <a href="#" class="text-gray-400 hover:text-white"
+                            ><i class="fab fa-github"></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2024 Legal Verification. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // File upload handling
+            const dropZone = document.getElementById("dropZone");
+            const fileInput = document.getElementById("fileInput");
+            const fileInfo = document.getElementById("fileInfo");
+            const fileName = document.getElementById("fileName");
+            const fileSize = document.getElementById("fileSize");
+            const documentText = document.getElementById("documentText");
+            const analyzeAllBtn = document.getElementById("analyzeAllBtn");
+            const resultsContent = document.getElementById("resultsContent");
+
+            // Sample responses for demonstration
+            const sampleResponses = {
+                clause: `Clause Analysis Results:
+
+1. IDENTIFIED CLAUSES:
+   - Confidentiality Clause: Medium Risk
+   - Termination Clause: High Risk
+   - Indemnification Clause: Low Risk
+   - Governing Law Clause: Low Risk
+   - Limitation of Liability: High Risk
+
+2. RISK ASSESSMENT:
+   Overall Risk Level: Medium-High (7/10)
+   Critical Issues: Termination conditions are overly broad, Liability limitations could be problematic
+
+3. RECOMMENDATIONS:
+   - Review termination conditions
+   - Clarify liability limitations
+   - Add dispute resolution mechanism`,
+
+                risk: `Risk Assessment Results:
+
+OVERALL RISK SCORE: 7/10 - MODERATE TO HIGH RISK
+
+HIGH-RISK AREAS:
+1. Termination Conditions: Termination for convenience with minimal notice
+2. Liability Limitations: Caps that may not be enforceable
+3. IP Ownership: Unclear ownership of developed materials
+
+MISSING CLAUSES:
+- Force Majeure
+- Dispute Resolution
+- Data Protection
+
+RECOMMENDATIONS:
+1. Add detailed termination conditions
+2. Clarify liability provisions
+3. Include missing standard clauses`,
+
+                compliance: `Compliance Check Results:
+
+COMPLIANCE STATUS: 85% COMPLIANT
+
+ISSUES IDENTATED:
+1. Missing GDPR compliance language for EU data processing
+2. No specific California Consumer Privacy Act provisions
+3. ADA compliance not explicitly addressed
+
+LANGUAGE CLARITY ISSUES:
+- Section 4.2 contains ambiguous phrasing
+- Definitions section could be more comprehensive
+
+RECOMMENDATIONS:
+1. Add specific data protection clauses
+2. Clarify ambiguous language
+3. Include accessibility compliance statement`,
+
+                summary: `Executive Summary:
+
+DOCUMENT TYPE: Software Development Agreement
+
+KEY PARTIES:
+- Developer: TechSolutions Inc.
+- Client: Global Enterprises LLC
+
+MAIN TERMS:
+- 12-month development period
+- $250,000 fixed fee
+- Monthly milestone payments
+
+IMPORTANT DATES:
+- Start Date: January 15, 2024
+- Completion: January 14, 2025
+- Payment Milestones: Monthly on the 15th
+
+CRITICAL PROVISIONS:
+- IP transfers to client upon full payment
+- 30-day termination notice required
+- Limited warranty period: 90 days`,
+
+                certificate: `Certificate Authenticity Analysis:
+
+AUTHENTICITY STATUS: SUSPICIOUS
+
+RED FLAGS IDENTIFIED:
+1. Missing official registration numbers
+2. Inconsistent formatting with standard certificates
+3. No verifiable issuing authority details
+4. Missing official seal or stamp references
+5. Unprofessional language structure
+
+RECOMMENDATION: 
+Verify with issuing authority and request original documentation. This certificate shows multiple indicators of potential forgery.`,
+
+                land: `Land Document Analysis:
+
+LEGITIMACY STATUS: QUESTIONABLE
+
+KEY FINDINGS:
+1. Survey numbers format inconsistent with local standards
+2. Boundary descriptions lack proper legal measurements
+3. Missing mandatory government registration stamps
+4. Witness signature requirements not fully met
+5. Property description lacks required precision
+
+AUTHENTICITY CONCERNS:
+- Document structure appears modified
+- Legal terminology misused in sections
+- Missing standard land registry references
+
+RECOMMENDATION: Conduct physical verification and consult with land registry office.`,
+
+                fraud: `Comprehensive Fraud Analysis:
+
+OVERALL AUTHENTICITY RATING: LIKELY FAKE
+
+FRAUD INDICATORS:
+1. Document shows signs of digital manipulation
+2. Inconsistent font usage throughout document
+3. Copy-paste artifacts detected in legal language
+4. Missing standard legal formatting elements
+5. Professional terminology misapplied
+
+TECHNICAL ANALYSIS:
+- Multiple font styles detected (indicates copy-paste)
+- Formatting irregularities in numbered sections
+- Header/footer inconsistencies
+
+RECOMMENDATION: This document requires immediate professional verification. Do not rely on its contents without thorough validation.`,
+            };
+
+            // Tab switching
+            const tabButtons = document.querySelectorAll(".tab-btn");
+            let activeTab = "clause";
+
+            tabButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    const tab = this.getAttribute("data-tab");
+                    activeTab = tab;
+
+                    // Update active tab styling
+                    tabButtons.forEach((btn) =>
+                        btn.classList.remove("tab-active", "text-blue-600")
+                    );
+                    this.classList.add("tab-active", "text-blue-600");
+
+                    // Show appropriate content if document text exists
+                    if (documentText.value.trim()) {
+                        showResults(tab);
+                    }
+                });
+            });
+
+            // File upload handling
+            dropZone.addEventListener("click", () => fileInput.click());
+
+            dropZone.addEventListener("dragover", (e) => {
+                e.preventDefault
